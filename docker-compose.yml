@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   webserver:
-    container_name: webserver
+    container_name: webserver-globalmart
     build: ./
     command: sh -c "python manage.py runserver 0.0.0.0:8000"
     volumes:
@@ -13,7 +13,7 @@ services:
       - db
   
   db:
-    container_name: db
+    container_name: db-master-globalmart
     image: postgres:14.7-alpine
     volumes:
       - pgdata:/var/lib/postgresql/data/
@@ -25,14 +25,14 @@ services:
       - POSTGRES_DB=globalmart
 
   pgadmin:
-    container_name: pgadmin4
+    container_name: pgadmin4-globalmart
     image: dpage/pgadmin4
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@globalmart.in
       PGADMIN_DEFAULT_PASSWORD: root123
     ports:
-      - "5050:80"
+      - "5051:80"
 
 volumes:
   pgdata:
