@@ -4,16 +4,24 @@ import json
 from rest_framework import status as api_response_status
 from api.models import *
 from api.serializers import *
+from django.core.paginator import Paginator
 
 class ProductsByCategory(APIView):
 
-    def get(self, request, id, format=None):
+    def get(self, request, format=None):
 
-        category = Category.objects.get(id=id)
-        subcategories = SubCategory.objects.filter(category=category)      
+        category_id = request.GET.get('category')
+        page = request.GET.get('page')
+
+        category = Category.objects.get(id=category_id)
+        subcategories = SubCategory.objects.filter(category=category)
         products = Product.objects.filter(sub_category__in=subcategories)
 
-        products = ProductSerializer(products, many=True)
+        paginator = Paginator(products, 10)
+        products_page = paginator.get_page(page)      
+        
+
+        products = ProductSerializer(products_page, many=True)
 
         return JsonResponse({
             'success': True,
