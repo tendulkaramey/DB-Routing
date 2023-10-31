@@ -24,6 +24,32 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=globalmart
 
+  db-replica1:
+    container_name: db-replica1-globalmart
+    image: postgres:14.7-alpine
+    volumes:
+      - pgdata_replica1:/var/lib/postgresql/data/
+    ports:
+      - 5433:5433
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=globalmart
+      - PGPORT=5433
+
+  db-replica2:
+    container_name: db-replica2-globalmart
+    image: postgres:14.7-alpine
+    volumes:
+      - pgdata_replica2:/var/lib/postgresql/data/
+    ports:
+      - 5434:5434
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=globalmart
+      - PGPORT=5434
+
   pgadmin:
     container_name: pgadmin4-globalmart
     image: dpage/pgadmin4
@@ -36,4 +62,6 @@ services:
 
 volumes:
   pgdata:
+  pgdata_replica1:
+  pgdata_replica2:
   

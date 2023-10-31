@@ -112,6 +112,22 @@ DATABASES = {
         "PASSWORD": "postgres",
         "HOST": "db",  # set in docker-compose.yml
         "PORT": '5432',
+    },
+    "replica1": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "globalmart",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "db-replica1",  # set in docker-compose.yml
+        "PORT": '5433',
+    },
+    "replica2": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "globalmart",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "db-replica2",  # set in docker-compose.yml
+        "PORT": '5434',
     }
 }
 
