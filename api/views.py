@@ -5,6 +5,7 @@ from rest_framework import status as api_response_status
 from api.models import *
 from api.serializers import *
 from django.core.paginator import Paginator
+from django.db.models import Prefetch
 
 class ProductsByCategory(APIView):
 
@@ -15,7 +16,9 @@ class ProductsByCategory(APIView):
 
         category = Category.objects.get(id=category_id)
         subcategories = SubCategory.objects.filter(category=category)
-        products = Product.objects.filter(sub_category__in=subcategories)
+        subcategories_prefetch = Prefetch('sub_category', queryset=subcategories)
+        products = Product.objects.filter(sub_category__in=subcategories).prefetch_related(subcategories_prefetch)
+        #products = Product.objects.filter(sub_category__in=subcategories)
 
         paginator = Paginator(products, 10)
         products_page = paginator.get_page(page)      

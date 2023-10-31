@@ -7,11 +7,11 @@ class SubCategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProductSerializer(serializers.ModelSerializer):
-    '''sub_category = serializers.SerializerMethodField()
+    sub_category = serializers.SerializerMethodField()
 
     def get_sub_category(self, product):
         subcategory = SubCategorySerializer(product.sub_category)
-        return subcategory.data'''
+        return subcategory.data
     class Meta:
         model = Product
         fields = '__all__'
