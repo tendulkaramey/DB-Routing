@@ -105,7 +105,8 @@ WSGI_APPLICATION = "globalmart.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
+    'default': {},
+    "primary": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "globalmart",
         "USER": "postgres",
@@ -131,7 +132,7 @@ DATABASES = {
     }
 }
 
-
+DATABASE_ROUTERS = ['api.dbrouter.PrimaryReplicaRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

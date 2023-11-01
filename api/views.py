@@ -17,7 +17,7 @@ class ProductsByCategory(APIView):
         category = Category.objects.get(id=category_id)
         subcategories = SubCategory.objects.filter(category=category)
         subcategories_prefetch = Prefetch('sub_category', queryset=subcategories)
-        products = Product.objects.filter(sub_category__in=subcategories).prefetch_related(subcategories_prefetch)
+        products = Product.objects.filter(sub_category__in=subcategories).prefetch_related(subcategories_prefetch).order_by('id') #to get uniform paginated results.
         #products = Product.objects.filter(sub_category__in=subcategories)
 
         paginator = Paginator(products, 10)
