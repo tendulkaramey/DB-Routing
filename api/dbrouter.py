@@ -1,11 +1,17 @@
 import random
 
 class PrimaryReplicaRouter:
+
+    def __init__(self):
+        self.replica_dbs = ['replica1', 'replica2']
+        self.next_replica = 0
+
     def db_for_read(self, model, **hints):
         """
         Reads go to a randomly-chosen replica.
         """
-        db_to = random.choice(['replica1', 'replica2'])
+        db_to = self.replica_dbs[self.next_replica]
+        self.next_replica = (self.next_replica + 1) % 2
         print('****'*20)
         print(db_to)
         return db_to 
