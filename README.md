@@ -10,4 +10,27 @@ This is a POC (proof of concept) project aimed to learn and implement system des
 
 ## Setting up
 
-We are using docker to setup and run the project, so it should not take time to setup and make this project running on your machine.
+### setup log: create directory 'logs' before running
+
+1. docker-compose up 
+2. run migrations on primary db:docker-compose exec webserver python manage.py migrate --database=primary
+3. populate data into database: docker-compose exec webserver python manage.py populatedb
+4. generate backups of primary database and restore into replicas (still learning how to setup auto sync from master to replicas)
+5. generate backup sql file: docker-compose exec db pg_dump -U postgres -d globalmart -f /backup.sql
+6. copy into ur machine: docker cp db-master-globalmart:/backup.sql "your machine path"
+7. copy this file into replicas: docker cp "machine path" db-replica1-globalmart:/backup.sql
+8. restore sql file into replicas:docker-compose exec db-replica1 psql -U postgres -d globalmart -a -f /backup.sql
+9. you can use pgadmin tool to login and view your databases. username and password is in docker-compose file. it works on port 5051.
+
+## Running
+
+Hit the following GET Api: http://localhost:8000/api/products-by-category?category=4&page=1
+<br>
+you can change the paramters.
+
+<p>Observe the results in the terminal or in the log file, you can check which db the query went: replica1 or replica2.</p>
+
+<p>I have created a small test file which runs 'N' nos of api requests, so we can see the queries going to replicas under load.
+file: dbroutertest.py, run this file outside the container</p>
+
+## Results

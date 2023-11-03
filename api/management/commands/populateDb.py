@@ -31,7 +31,7 @@ class Command(BaseCommand):
         Category.objects.bulk_create(bulk_add_categories)
 
         category_objects = {}
-        categories_objects = Category.objects.all()
+        categories_objects = Category.objects.using('primary').all()
         for category in categories_objects:
             category_objects[category.name] = category
 
@@ -44,7 +44,7 @@ class Command(BaseCommand):
 
         SubCategory.objects.bulk_create(bulk_add_sub_categories)
         subcategory_objects = {}
-        subcategories_objects = SubCategory.objects.all()
+        subcategories_objects = SubCategory.objects.using('primary').all()
         for subcategory in subcategories_objects:
             subcategory_objects[subcategory.name] = subcategory
 
@@ -79,5 +79,5 @@ class Command(BaseCommand):
             bulk_add_products.append(product_obj)
 
         Product.objects.bulk_create(bulk_add_products)
-        self.stdout.write(self.style.SUCCESS('Successfully executed your custom script'))
+        self.stdout.write(self.style.SUCCESS('Successfully populated database.'))
 
