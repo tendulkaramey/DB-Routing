@@ -14,16 +14,29 @@ class ProductsByCategory(APIView):
         category_id = request.GET.get('category')
         page = request.GET.get('page')
 
-        category = Category.objects.get(id=category_id)
+        if category_id is None:
+            return JsonResponse({
+                'success': False,
+                'userMessage': 'category id missing.',
+            }, status = api_response_status.HTTP_400_BAD_REQUEST)
+        
+        page = 1 if page is None else page
+
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'userMessage': 'Not Found',
+            }, status = api_response_status.HTTP_404_NOT_FOUND)
+
         subcategories = SubCategory.objects.filter(category=category)
         subcategories_prefetch = Prefetch('sub_category', queryset=subcategories)
         products = Product.objects.filter(sub_category__in=subcategories).prefetch_related(subcategories_prefetch).order_by('id') #to get uniform paginated results.
-        #products = Product.objects.filter(sub_category__in=subcategories)
 
         paginator = Paginator(products, 10)
         products_page = paginator.get_page(page)      
         
-
         products = ProductSerializer(products_page, many=True)
 
         return JsonResponse({
