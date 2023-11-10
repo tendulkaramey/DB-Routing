@@ -8,7 +8,7 @@ class PrimaryReplicaRouter:
 
     def db_for_read(self, model, **hints):
         """
-        Reads go to a randomly-chosen replica.
+        Round-Robin
         """
         db_to = self.replica_dbs[self.next_replica]
         self.next_replica = (self.next_replica + 1) % 2
@@ -33,7 +33,4 @@ class PrimaryReplicaRouter:
         return None
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
-        """
-        All non-auth models end up in this pool.
-        """
         return True
