@@ -36,3 +36,8 @@ file: dbroutertest.py, run this file outside the container</p>
 ## Results
 
 [Shows Queries going to database in Round Robin Manner](https://drive.google.com/file/d/1mrPhwM1qUE4skDJn0kF-EZVIljpA8oep/view?usp=sharing)
+
+## References:
+
+- https://docs.djangoproject.com/en/4.2/topics/db/multi-db/
+- https://docs.djangoproject.com/en/4.2/howto/custom-management-commands/
